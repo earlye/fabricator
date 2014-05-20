@@ -1,0 +1,56 @@
+#ifndef hCE54937C_11D2_4362_87B9_7BE351AA9469
+#define hCE54937C_11D2_4362_87B9_7BE351AA9469
+
+#include <set>
+#include <string>
+
+#include <boost/filesystem.hpp>
+#include <boost/property_tree/ptree_fwd.hpp>
+
+namespace fab
+{
+  class settings
+  {
+  public:
+    typedef boost::filesystem::path path_type;
+
+    std::set< path_type > const& source_modules() const;
+    settings& source_modules(std::set< path_type > const&);
+    settings& source_modules_insert( path_type const& path );
+
+    std::set< path_type > const& library_dirs() const;
+    settings& library_dirs(std::set< path_type > const&);
+    settings& library_dirs_insert( path_type const& path );
+
+    std::set< path_type > const& objects() const;
+    settings& objects(std::set< path_type > const&);
+    settings& objects_insert( path_type const& path );
+
+    std::set< path_type > const& ignore( ) const;
+    settings& ignore( std::set< path_type > const& value );
+    settings& ignore_insert( path_type const& path );
+
+    std::string target() const;
+    settings& target( std::string const& value );
+
+    settings& deserialize( boost::property_tree::ptree const& source );
+
+    std::set<std::string> const& cxxflags( ) const;
+    settings& cxxflags( std::set<std::string> const& value );
+    settings& cxxflags_insert( std::string const& value );
+
+    bool build_all() const;
+    settings& build_all( bool value );
+
+  private:
+    std::set< path_type > ignore_;
+    std::set< path_type > source_modules_;
+    std::set< path_type > library_dirs_;
+    std::set< path_type > objects_;
+    std::set< std::string > cxxflags_;
+    std::string target_;
+    bool build_all_;
+  };
+}
+
+#endif
