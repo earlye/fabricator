@@ -2,4 +2,5 @@
 *.d
 *.o
 *.exe
+fab
 lib
