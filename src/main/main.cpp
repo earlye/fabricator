@@ -3,8 +3,8 @@
 
 #include <iostream>
 
-
-
+// Thunk down to try_main, translate failure exceptions to exit codes. Other exceptions don't have a failure_code(), so just
+// let c++ do what it normally does.
 int main(int argc, char** argv )
 {
   try
@@ -18,18 +18,3 @@ int main(int argc, char** argv )
       return f.failure_code();
     }
 }
-  // check for and read Fab.json file
-  // if Fab.json file requires plugins, load them.
-  // if Fab.json file contains "target", then:
-  //   scan src/main folder - for each *.cpp,*.c:
-  //     run cpp -M to get dependencies
-  //     run make against the .d file to generate .o file
-  //   scan src/test folder - for each *.cpp:
-  //     run cpp -M to get dependencies
-  //     run make against generated .d file to generate .o file
-  //     generate test-harness.cpp & compile it.
-  //     run test-harness
-  // if Fab.json file did not contain "target", or Fab.json was not present:
-  //   scan subfolders, skipping any listed in "ignore" array, for each folder:
-  //     run "fab" in that folder.
-

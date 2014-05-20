@@ -5,6 +5,9 @@
 
 namespace fab
 {
+  settings::settings()
+    : compiler_("g++-4.9")
+  { }
 
   std::set< settings::path_type > const& settings::ignore( ) const
   { return ignore_; }
@@ -131,6 +134,17 @@ namespace fab
   settings& settings::build_all(bool value)
   {
     build_all_ = value;
+    return *this;
+  }
+
+  std::string settings::compiler() const
+  {
+    return compiler_;
+  }
+
+  settings& settings::compiler(std::string const& value)
+  {
+    compiler_ = value;
     return *this;
   }
 

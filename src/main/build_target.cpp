@@ -1,5 +1,7 @@
 #include "build_target.hpp"
 
+#include "failure.hpp"
+
 #include <boost/process.hpp> 
 #include <boost/process/mitigate.hpp>
 
@@ -11,9 +13,7 @@ void build_target( fab::settings& settings )
   using namespace boost::process;
   using namespace boost::process::initializers;
 
-  //boost::filesystem::path command = "/usr/local/bin/g++-4.9";
-  boost::filesystem::path command = boost::process::search_path("g++-4.9");
-
+  boost::filesystem::path command = boost::process::search_path(settings.compiler());
 
   std::vector<std::string> args;
   args.push_back(command.string());
@@ -34,7 +34,9 @@ void build_target( fab::settings& settings )
   child c = execute(set_args(args),inherit_env()); 
   auto exit_code = wait_for_exit(c);
 
-  std::cout << " - Exit Code:" << exit_code << std::endl;
-  std::cout << " - Exit Code:" << BOOST_PROCESS_EXITSTATUS(exit_code) << std::endl;
+  if (BOOST_PROCESS_EXITSTATUS(exit_code))
+    {
+      throw failure( exit_code, "Link failed" );
+    }
   
 }

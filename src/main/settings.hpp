@@ -14,6 +14,8 @@ namespace fab
   public:
     typedef boost::filesystem::path path_type;
 
+    settings();
+
     std::set< path_type > const& source_modules() const;
     settings& source_modules(std::set< path_type > const&);
     settings& source_modules_insert( path_type const& path );
@@ -42,6 +44,9 @@ namespace fab
     bool build_all() const;
     settings& build_all( bool value );
 
+    std::string compiler() const;
+    settings& compiler(std::string const& value);
+
   private:
     std::set< path_type > ignore_;
     std::set< path_type > source_modules_;
@@ -49,6 +54,7 @@ namespace fab
     std::set< path_type > objects_;
     std::set< std::string > cxxflags_;
     std::string target_;
+    std::string compiler_;
     bool build_all_;
   };
 }

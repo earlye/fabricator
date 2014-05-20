@@ -60,6 +60,7 @@ void try_main(int argc, char** argv)
       settings.deserialize(read_json(fab_json_path));
     }
 
+  // If a Fab file doesn't have a "target" node, the presumption is that this is a directory full of components to build.
   if (settings.target().empty()) 
     {
       fs::path dir_to_scan(".");  
@@ -67,15 +68,16 @@ void try_main(int argc, char** argv)
     }
   else
     {
-      // Find source modules:
+      // Find source modules.
+      // For now, this means "scan src/main" and "scan library_dirs". "library_dirs" will eventually go away, in favor of being able to specify dependencies, once artifact repos are set up.
       boost::filesystem::path src_main("src/main");
       scan_source_dir(settings,src_main);
-      std::for_each(settings.library_dirs().begin(),settings.library_dirs().end(),boost::bind(scan_source_dir,boost::ref(settings),_1));
+      std::for_each(settings.library_dirs().begin(),settings.library_dirs().end(),boost::bind(scan_source_dir,boost::ref(settings),_1));      
       
-      // Compile source modules:
+      // Compile source modules
       std::for_each(settings.source_modules().begin(),settings.source_modules().end(), boost::bind(compile_module,boost::ref(settings),_1));
 
-      // Link:
+      // Link
       build_target(settings);
     }
 }
