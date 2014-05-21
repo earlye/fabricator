@@ -18,7 +18,7 @@ void build_target( fab::settings& settings )
   std::vector<std::string> args;
   args.push_back(command.string());
   //std::copy(settings.cxxflags().begin(),settings.cxxflags().end(),std::back_inserter(args));
-  args.push_back("-v");
+  //args.push_back("-v");
   //args.push_back("-MD");
   args.push_back("-o");
   args.push_back(settings.target());

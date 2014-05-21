@@ -7,6 +7,7 @@ namespace fab
 {
   settings::settings()
     : compiler_("g++-4.9")
+    , build_all_(false)
   { }
 
   std::set< settings::path_type > const& settings::ignore( ) const
