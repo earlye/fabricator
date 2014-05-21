@@ -48,6 +48,6 @@ void compile_module(fab::settings& settings, boost::filesystem::path const& path
     }
   else
     {
-      std::cout << "Not re-compiling " << path << std::endl;
+      // std::cout << "Not re-compiling " << path << std::endl;
     }
 }

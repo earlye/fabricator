@@ -59,6 +59,7 @@ void try_main(int argc, char** argv)
     {
       settings.deserialize(read_json(fab_json_path));
     }
+  settings.fab(argv[0]);
 
   // If a Fab file doesn't have a "target" node, the presumption is that this is a directory full of components to build.
   if (settings.target().empty()) 

@@ -21,7 +21,7 @@ void scan_child(fab::settings const& settings, boost::filesystem::directory_entr
     }
   if (contains(settings.ignore(),path.filename()))
     {
-      std::cout << "ignoring " << path << std::endl;
+      //std::cout << "ignoring " << path << std::endl;
       return;
     }
 
@@ -32,12 +32,12 @@ void scan_child(fab::settings const& settings, boost::filesystem::directory_entr
     command = boost::process::search_path(command.string());
   args.push_back(command.string());
 
-  std::cout << "Building " << path << std::endl;
-  std::cout << " - fab: " << settings.fab() << std::endl;
-  std::cout << " - command: ";
-  std::copy( args.begin(), args.end() , std::ostream_iterator<std::string>(std::cout, " "));
-  std::cout << std::endl;
-  std::cout << " - cwd:" << boost::filesystem::current_path() << std::endl;
+  //std::cout << "Building " << path << std::endl;
+  //std::cout << " - fab: " << settings.fab() << std::endl;
+  //std::cout << " - command: ";
+  //std::copy( args.begin(), args.end() , std::ostream_iterator<std::string>(std::cout, " "));
+  //std::cout << std::endl;
+  //std::cout << " - cwd:" << boost::filesystem::current_path() << std::endl;
   
   child c = execute
     ( 

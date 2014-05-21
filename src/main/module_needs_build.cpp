@@ -66,6 +66,6 @@ bool module_needs_build(fab::settings& settings, boost::filesystem::path const& 
 
     }
 
-  std::cout << path << " does not need build" << std::endl;
+  //std::cout << path << " does not need build" << std::endl;
   return false;
 }
