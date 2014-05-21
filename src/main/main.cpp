@@ -14,7 +14,7 @@ int main(int argc, char** argv )
     }
   catch( failure f )
     {
-      std::cerr << f.what() << std::endl;
+      std::cerr << "Error " << f.failure_code() << ": " << f.what() << std::endl;
       return f.failure_code();
     }
 }

@@ -16,6 +16,9 @@ namespace fab
 
     settings();
 
+    path_type fab() const;
+    settings& fab(path_type const& value);
+
     std::set< path_type > const& source_modules() const;
     settings& source_modules(std::set< path_type > const&);
     settings& source_modules_insert( path_type const& path );
@@ -53,6 +56,7 @@ namespace fab
     std::set< path_type > library_dirs_;
     std::set< path_type > objects_;
     std::set< std::string > cxxflags_;
+    path_type fab_;
     std::string target_;
     std::string compiler_;
     bool build_all_;

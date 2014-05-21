@@ -31,7 +31,7 @@ void display_version(bool value)
 {
   if ( value ) 
     {
-      throw failure(0,"Fabricator Version 0.1");
+      throw failure(0,"Fabricator Version 0.3");
     }
 }
 

@@ -10,6 +10,15 @@ namespace fab
     , build_all_(false)
   { }
 
+  settings::path_type settings::fab() const
+  { return fab_; }
+
+  settings& settings::fab(path_type const& value) 
+  { 
+    fab_ = value; 
+    return *this;
+  }
+
   std::set< settings::path_type > const& settings::ignore( ) const
   { return ignore_; }
 
