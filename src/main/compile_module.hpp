@@ -5,6 +5,6 @@
 
 #include <boost/filesystem.hpp>
 
-void compile_module(fab::settings& settings, boost::filesystem::path const& entry);
+boost::filesystem::path compile_module(fab::settings& settings, boost::filesystem::path const& entry);
 
 #endif

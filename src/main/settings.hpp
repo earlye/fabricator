@@ -44,11 +44,18 @@ namespace fab
     settings& cxxflags( std::set<std::string> const& value );
     settings& cxxflags_insert( std::string const& value );
 
+    std::set<std::string> const& lflags( ) const;
+    settings& lflags( std::set<std::string> const& value );
+    settings& lflags_insert( std::string const& value );
+
     bool build_all() const;
     settings& build_all( bool value );
 
     std::string compiler() const;
     settings& compiler(std::string const& value);
+
+    std::string objdump() const;
+    settings& objdump(std::string const& value);
 
   private:
     std::set< path_type > ignore_;
@@ -56,8 +63,10 @@ namespace fab
     std::set< path_type > library_dirs_;
     std::set< path_type > objects_;
     std::set< std::string > cxxflags_;
+    std::set< std::string > lflags_;
     path_type fab_;
     std::string target_;
+    std::string objdump_;
     std::string compiler_;
     bool build_all_;
   };

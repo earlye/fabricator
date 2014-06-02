@@ -7,6 +7,7 @@ namespace fab
 {
   settings::settings()
     : compiler_("g++-4.9")
+    , objdump_("gobjdump")
     , build_all_(false)
   { }
 
@@ -61,6 +62,10 @@ namespace fab
     boost::property_tree::ptree cxxflags = source.get_child("cxxflags",boost::property_tree::ptree());
     for( auto i = cxxflags.begin() ; i != cxxflags.end() ; ++i )
       cxxflags_.insert(i->second.data());
+
+    boost::property_tree::ptree lflags = source.get_child("lflags",boost::property_tree::ptree());
+    for( auto i = lflags.begin() ; i != lflags.end() ; ++i )
+      lflags_.insert(i->second.data());
 
     boost::property_tree::ptree library_dirs  = source.get_child("library_dirs",boost::property_tree::ptree());
     for( auto i = library_dirs.begin() ; i != library_dirs.end() ; ++i )
@@ -136,6 +141,23 @@ namespace fab
     return *this;
   }
 
+  std::set<std::string> const& settings::lflags() const
+  {
+    return lflags_;
+  }
+
+  settings& settings::lflags(std::set<std::string> const& value)
+  {
+    lflags_ = value;
+    return *this;
+  }
+
+  settings& settings::lflags_insert(std::string const& value)
+  {
+    lflags_.insert(value);
+    return *this;
+  }
+
   bool settings::build_all() const
   {
     return build_all_;
@@ -155,6 +177,17 @@ namespace fab
   settings& settings::compiler(std::string const& value)
   {
     compiler_ = value;
+    return *this;
+  }
+
+  std::string settings::objdump() const
+  {
+    return objdump_;
+  }
+
+  settings& settings::objdump(std::string const& value)
+  {
+    objdump_ = value;
     return *this;
   }
 

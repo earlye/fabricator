@@ -2,10 +2,12 @@
 
 #include "build_target.hpp"
 #include "contains.hpp"
+#include "contains_main.hpp"
 #include "failure.hpp"
 #include "read_json.hpp"
 #include "scan_child.hpp"
 #include "scan_source_dir.hpp"
+#include "scan_test_dir.hpp"
 #include "compile_module.hpp"
 #include "settings.hpp"
 
@@ -76,9 +78,22 @@ void try_main(int argc, char** argv)
       std::for_each(settings.library_dirs().begin(),settings.library_dirs().end(),boost::bind(scan_source_dir,boost::ref(settings),_1));      
       
       // Compile source modules
-      std::for_each(settings.source_modules().begin(),settings.source_modules().end(), boost::bind(compile_module,boost::ref(settings),_1));
+      boost::filesystem::path main_object;
+      for( auto iter = settings.source_modules().begin(); iter != settings.source_modules().end() ; ++iter ) {
+	boost::filesystem::path object = compile_module(settings,*iter);
+	if ( !contains_main( settings, object ) )
+	  settings.objects_insert(object);
+	else
+	  main_object = object;
+      }
+
+      // Run unit tests
+      boost::filesystem::path src_test("src/test");
+      scan_test_dir(settings,src_test);
 
       // Link
+      if (!main_object.empty())
+	settings.objects_insert(main_object);
       build_target(settings);
     }
 }

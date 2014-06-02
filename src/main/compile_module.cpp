@@ -12,13 +12,12 @@
 #include <sstream>
 #include <vector>
 
-void compile_module(fab::settings& settings, boost::filesystem::path const& path)
+boost::filesystem::path compile_module(fab::settings& settings, boost::filesystem::path const& path)
 {
   using namespace boost::process;
   using namespace boost::process::initializers;
 
   boost::filesystem::path module_target = replace_extension(path, ".o");
-  settings.objects_insert(module_target);
 
   if ( module_needs_build(settings,path) )
     {
@@ -50,4 +49,6 @@ void compile_module(fab::settings& settings, boost::filesystem::path const& path
     {
       // std::cout << "Not re-compiling " << path << std::endl;
     }
+
+  return module_target;
 }
