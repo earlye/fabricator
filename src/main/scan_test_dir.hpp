@@ -6,6 +6,5 @@
 #include <boost/filesystem.hpp>
 
 void scan_test_dir(fab::settings& settings, ::boost::filesystem::path path);
-void scan_test_dir_entry(fab::settings& settings, ::boost::filesystem::directory_entry entry);
 
 #endif

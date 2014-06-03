@@ -1,4 +1,4 @@
-#include "contains_main.hpp"
+#include "object_list_functions.hpp"
 
 #include "settings.hpp"
 
@@ -6,7 +6,7 @@
 #include <boost/process.hpp> 
 #include <boost/process/mitigate.hpp>
 
-bool contains_main( fab::settings& settings, boost::filesystem::path object ) 
+std::vector<std::string> object_list_functions( fab::settings& settings, boost::filesystem::path object ) 
 {
   using namespace boost::process;
   using namespace boost::process::initializers;
@@ -20,6 +20,9 @@ bool contains_main( fab::settings& settings, boost::filesystem::path object )
 
   // dump symbols"
   args.push_back( "-t" );
+
+  // demangle
+  args.push_back( "-C" );
 
   // only include symbols in the ".text" segment
   args.push_back( "-j" ); args.push_back( ".text" );
@@ -37,17 +40,18 @@ bool contains_main( fab::settings& settings, boost::filesystem::path object )
   file_descriptor_source source(p.source, close_handle);
   stream<file_descriptor_source> is(source);
   std::string s;
-  std::string const pattern = "[.text] _main";
+  std::string const pattern = "[.text] ";
+  std::vector<std::string> result;
   while( is && !is.eof() )
     {
       std::getline(is, s);
-      int pos = s.find(pattern);
-      int epos = s.length() - pattern.length();
-      if ( epos >= 0 && pos > 0 && epos == pos )
+      std::string::size_type pos = s.find(pattern);
+      if ( pos != std::string::npos )
 	{
-	  return true;
+	  std::string method = s.substr(pos + pattern.length());
+	  result.push_back(method);
 	}
     }
 
-  return false;
+  return result;
 }

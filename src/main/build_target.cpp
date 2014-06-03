@@ -8,7 +8,7 @@
 #include <algorithm>
 #include <iostream>
 
-void build_target( fab::settings& settings )
+void build_target( fab::settings& settings, boost::filesystem::path target, std::set< boost::filesystem::path > const& objects , boost::filesystem::path main_object)
 {
   using namespace boost::process;
   using namespace boost::process::initializers;
@@ -21,13 +21,14 @@ void build_target( fab::settings& settings )
   //args.push_back("-v");
   //args.push_back("-MD");
   args.push_back("-o");
-  args.push_back(settings.target());
-  for( auto obj = settings.objects().begin(); obj != settings.objects().end() ; ++obj )
+  args.push_back(target.string());
+  for( auto obj = objects.begin(); obj != objects.end() ; ++obj )
     {
       args.push_back(obj->string());
     }
+  args.push_back(main_object.string());
 
-  std::cout << "Linking " << settings.target() << "\n - ";  
+  std::cout << "Linking " << target << "\n - ";  
   std::copy( args.begin(), args.end() , std::ostream_iterator<std::string>(std::cout, " "));
   std::cout << std::endl;
 
@@ -36,7 +37,7 @@ void build_target( fab::settings& settings )
 
   if (BOOST_PROCESS_EXITSTATUS(exit_code))
     {
-      throw failure( exit_code, "Link failed" );
+      throw failure( BOOST_PROCESS_EXITSTATUS(exit_code), "Link failed" );
     }
   
 }

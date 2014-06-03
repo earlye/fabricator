@@ -87,14 +87,12 @@ void try_main(int argc, char** argv)
 	  main_object = object;
       }
 
+      // Link
+      build_target(settings,settings.target(),settings.objects(),main_object);
+
       // Run unit tests
       boost::filesystem::path src_test("src/test");
       scan_test_dir(settings,src_test);
-
-      // Link
-      if (!main_object.empty())
-	settings.objects_insert(main_object);
-      build_target(settings);
     }
 }
 

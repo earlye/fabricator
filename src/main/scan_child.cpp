@@ -49,6 +49,6 @@ void scan_child(fab::settings const& settings, boost::filesystem::directory_entr
   auto exit_code = wait_for_exit(c);
   if (BOOST_PROCESS_EXITSTATUS(exit_code))
     {
-      throw failure( exit_code, "Recursive build failed on module:" + path.string() );
+      throw failure( BOOST_PROCESS_EXITSTATUS(exit_code), "Recursive build failed on module:" + path.string() );
     }
 }

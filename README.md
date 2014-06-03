@@ -13,7 +13,24 @@ If you place this in the root of your project, running "fab" in that directory w
 
 You don't need to do anything else.  No compiler flags, nothing.  You *can* specify other stuff, but you don't need to.
 
-boost
-=====
+#### boost
 
 We use boost extensively inside fab, so as the tool matures, our support for boost will likely mature along with it. Right now it's pretty hoaky, so please bare with us.
+
+#### automated testing
+
+We do automated testing quite a bit, so expect fabricator to support it. We wanted to make it as simple as possible to create unit tests, without requiring you to write a bunch of support code for your tests. To provide that support, we implement this convention:
+
+A test is a function with this signature in any .cpp module residing in src/test:
+
+  void test[anything]();
+
+A test passes if it completes without throwing any exceptions, and fails if it throws an exception.
+
+Here is a complete example:
+
+  void test_something()
+  {
+    if (!something())
+      throw std::runtime_error("Expected something() to return true.");
+  }

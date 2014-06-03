@@ -37,12 +37,13 @@ boost::filesystem::path compile_module(fab::settings& settings, boost::filesyste
       std::cout << "Compiling " << path << "\n - ";
       std::copy( args.begin(), args.end() , std::ostream_iterator<std::string>(std::cout, " "));
       std::cout << std::endl;
+
       
       child c = execute( set_args(args) );
       auto exit_code = wait_for_exit(c);
       if (BOOST_PROCESS_EXITSTATUS(exit_code))
 	{
-	  throw failure( exit_code, "Compile failed on module:" + path.string() );
+	  throw failure( BOOST_PROCESS_EXITSTATUS(exit_code), "Compile failed on module:" + path.string() );
 	}
     }
   else
