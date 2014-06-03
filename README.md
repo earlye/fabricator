@@ -29,10 +29,10 @@ A test passes if it completes without throwing any exceptions, and fails if it t
 
 Here is a complete example:
 
-  <code>
+  <pre><code>
   void test_something()
   {
     if (!something())
       throw std::runtime_error("Expected something() to return true.");
   }
-  </code>
+  </code></pre>
