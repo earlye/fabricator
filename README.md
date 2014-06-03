@@ -30,6 +30,9 @@ A test passes if it completes without throwing any exceptions, and fails if it t
 Here is a complete example:
 
   <pre><code>
+  #include "something.h" // thing to test
+  #include <stdexcept>
+  
   void test_something()
   {
     if (!something())
