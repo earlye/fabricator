@@ -7,7 +7,9 @@ The intent is that you ought to be able to produce a file, Fab.json, with almost
 
 Here's a simple Fab.json file:
 
-  { "target" : "demo.exe" }
+```json
+{ "target" : "demo.exe" }
+```
 
 If you place this in the root of your project, running "fab" in that directory will cause fab to search "src/main" for any file ending in .cpp, and compile them. It will then attempt to link those files into "demo.exe".
 
@@ -21,7 +23,7 @@ We use boost extensively inside fab, so as the tool matures, our support for boo
 
 We do automated testing quite a bit, so expect fabricator to support it. We wanted to make it as simple as possible to create unit tests, without requiring you to write a bunch of support code for your tests. To provide that support, we implement this convention:
 
-A test is a function with this signature in any .cpp module residing in src/test:
+A test is a function with this signature in any .cpp module residing in ```src/test```:
 
 ```c++
 void test/*anything*/();
