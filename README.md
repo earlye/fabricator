@@ -23,14 +23,16 @@ We do automated testing quite a bit, so expect fabricator to support it. We want
 
 A test is a function with this signature in any .cpp module residing in src/test:
 
-  void test'anything'();
+  <code>void test'anything'();</code>
 
 A test passes if it completes without throwing any exceptions, and fails if it throws an exception.
 
 Here is a complete example:
 
+  <code>
   void test_something()
   {
     if (!something())
       throw std::runtime_error("Expected something() to return true.");
   }
+  </code>
