@@ -42,6 +42,7 @@ void try_main(int argc, char** argv)
   po::options_description options("Fabricator Options");
   options.add_options()
     ("help", "produce help message")
+    ("dir" , po::value<std::string>(), "build in directory. If not provided, builds in current directory.")
     ("version" , po::bool_switch()->notifier(&display_version), "display version" )
     ;
 
@@ -54,6 +55,14 @@ void try_main(int argc, char** argv)
       std::cout << options << std::endl;
       return;
     }
+
+  boost::filesystem::path build_dir = boost::filesystem::current_path();
+  if (config.count("dir"))
+    {
+      build_dir = boost::filesystem::path(config["dir"].as<std::string>());
+    }
+  std::cout << "Entering directory `" << build_dir.string() << "'" << std::endl;
+  boost::filesystem::current_path( build_dir );
 
   fab::settings settings;
   fs::path fab_json_path("Fab.json");
@@ -94,5 +103,8 @@ void try_main(int argc, char** argv)
       boost::filesystem::path src_test("src/test");
       scan_test_dir(settings,src_test);
     }
+
+  std::cout << "Leaving directory `" << build_dir.string() << "'" << std::endl;
+
 }
 
