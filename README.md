@@ -23,7 +23,7 @@ We do automated testing quite a bit, so expect fabricator to support it. We want
 
 A test is a function with this signature in any .cpp module residing in src/test:
 
-  void test{anything}();
+  void test'anything'();
 
 A test passes if it completes without throwing any exceptions, and fails if it throws an exception.
 
