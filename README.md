@@ -31,8 +31,8 @@ Here is a complete example:
 
   <pre><code>
   #include "something.h" // thing to test
-  #include <stdexcept>
-  
+  #include &lt;stdexcept&gt;
+
   void test_something()
   {
     if (!something())
