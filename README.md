@@ -31,7 +31,7 @@ Here is a complete example:
 
   <pre><code>
   #include "something.h" // thing to test
-  #include &lt;stdexcept&gt;
+  #include &lt;stdexcept&gt; // for std::runtime_error
 
   void test_something()
   {
