@@ -147,23 +147,23 @@ void write_test_suite( std::vector< std::string > const& test_methods )
     "{\n"
     "  int fail_count = 0;\n"
     "  int pass_count = 0;\n"
-    "  for( auto test : tests )\n"
+    "  for( auto current_test : tests )\n"
     "    {\n"
-    "      std::cout << \"--- \\\"\" << test.name_ << \"\\\"\" << std::endl;\n"
+    "      std::cout << \"--- \\\"\" << current_test.name_ << \"\\\"\" << std::endl;\n"
     "      try\n"
     "        {\n"
-    "          test.fn_();\n"
-    "          std::cout << \"test \\\"\" << test.name_ << \"\\\" PASSED\" << std::endl;\n"
+    "          current_test.fn_();\n"
+    "          std::cout << \"test \\\"\" << current_test.name_ << \"\\\" PASSED\" << std::endl;\n"
     "          ++pass_count;\n"
     "        }\n"
     "      catch( std::exception& e )\n"
     "        {\n"
-    "          std::cerr << \"test \\\"\" << test.name_ << \"\\\" FAILED:\" << e.what() << std::endl;\n"
+    "          std::cerr << \"test \\\"\" << current_test.name_ << \"\\\" FAILED:\" << e.what() << std::endl;\n"
     "          ++fail_count;\n"
     "        }\n"
     "      catch( ... )\n"
     "        {\n"
-    "          std::cerr << \"test \\\"\" << test.name_ << \"\\\" FAILED:\" << std::endl;\n"
+    "          std::cerr << \"test \\\"\" << current_test.name_ << \"\\\" FAILED:\" << std::endl;\n"
     "          ++fail_count;\n"
     "        }\n"
     "    }\n"
@@ -185,13 +185,16 @@ void scan_test_dir(fab::settings& settings, boost::filesystem::path dir)
       scan_test_dir_entry(test_objects,test_methods,settings, *iter);
     }
 
-  write_test_suite( test_methods );
+  if (!test_methods.empty())
+    {
+      write_test_suite( test_methods );
 
-  boost::filesystem::path main_object = compile_module(settings,".test_suite.cpp");
-  std::copy(settings.objects().begin(),settings.objects().end(),std::inserter(test_objects,test_objects.begin()));
+      boost::filesystem::path main_object = compile_module(settings,".test_suite.cpp");
+      std::copy(settings.objects().begin(),settings.objects().end(),std::inserter(test_objects,test_objects.begin()));
+      
+      build_target( settings, ".test_suite.exe", test_objects ,  main_object);
 
-  build_target( settings, ".test_suite.exe", test_objects ,  main_object);
-
-  run_tests( boost::filesystem::path("./.test_suite.exe" ));
+      run_tests( boost::filesystem::path("./.test_suite.exe" ));
+    }
 }
 

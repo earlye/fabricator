@@ -19,6 +19,10 @@ void scan_child(fab::settings const& settings, boost::filesystem::directory_entr
     {
       return;
     }
+  if (path.filename().string().find(".") ==0 )
+    {
+      return;
+    }
   if (contains(settings.ignore(),path.filename()))
     {
       //std::cout << "ignoring " << path << std::endl;
