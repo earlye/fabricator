@@ -9,6 +9,7 @@
 #include <boost/filesystem.hpp>
 #include <boost/process.hpp> 
 #include <boost/process/mitigate.hpp>
+#include <boost/algorithm/string.hpp>
 
 #include <iostream>
 #include <fstream>
@@ -41,9 +42,12 @@ void list_test_methods( boost::filesystem::path test_object, std::vector<std::st
   std::vector<std::string> functions = object_list_functions(settings,test_object);
   for( auto fn = functions.begin() ; fn != functions.end() ; ++fn )
     {
-      if ( fn->substr(0,4) == "test" && fn->substr(fn->length()-2) == "()" )
+      if ( fn->substr(fn->length()-2) == "()" )
 	{
-	  test_methods.push_back(fn->substr(0,fn->length()-2));
+	  if ( fn->substr(0,4) == "test" || std::string::npos != fn->find("::test")  )
+	    {
+	      test_methods.push_back(fn->substr(0,fn->length()-2));
+	    }
 	}
     }
 }
@@ -119,9 +123,25 @@ void write_test_suite( std::vector< std::string > const& test_methods )
   test_suite << "// automatically generated\n";
   test_suite << "#include <iostream>\n";
 
-  for( auto fn = test_methods.begin() ; fn != test_methods.end() ; ++fn )
+  for( auto method : test_methods )
     {
-      test_suite << "extern void " << *fn << "();\n";
+      std::vector< std::string > parts;
+      boost::algorithm::split(parts,method,boost::is_any_of(":"));
+      std::string basename = *parts.rbegin();
+      parts.pop_back();
+      for( auto ns : parts ) {
+	if ( ns.length() )
+	  test_suite << "namespace " << ns << " {";
+      }
+
+      test_suite << "extern void " << basename << "();";
+
+      for( auto ns : parts ) {
+	if ( ns.length() )
+	  test_suite << " }";
+      }
+
+      test_suite << "\n";
     }
 
   test_suite << "typedef void (*test_fn)();\n\n";
