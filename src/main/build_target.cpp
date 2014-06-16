@@ -8,7 +8,7 @@
 #include <algorithm>
 #include <iostream>
 
-void build_target( fab::settings& settings, boost::filesystem::path target, std::set< boost::filesystem::path > const& objects , boost::filesystem::path main_object)
+void build_target( fab::settings& settings, boost::filesystem::path target, std::set< boost::filesystem::path > const& objects , boost::filesystem::path main_object , std::string const& type )
 {
   using namespace boost::process;
   using namespace boost::process::initializers;
@@ -20,19 +20,27 @@ void build_target( fab::settings& settings, boost::filesystem::path target, std:
   std::copy(settings.lflags().begin(),settings.lflags().end(),std::back_inserter(args));
   //args.push_back("-v");
   //args.push_back("-MD");
+
+  if ( type == "shared" )
+    {
+      args.push_back("-shared");
+    }
+
   args.push_back("-o");
   args.push_back(target.string());
   for( auto obj = objects.begin(); obj != objects.end() ; ++obj )
     {
       args.push_back(obj->string());
     }
-  args.push_back(main_object.string());
-
+  if ( main_object.string().length() ) 
+    {
+      args.push_back(main_object.string());
+    }
   std::cout << "Linking " << target << "\n - ";  
   std::copy( args.begin(), args.end() , std::ostream_iterator<std::string>(std::cout, " "));
   std::cout << std::endl;
 
-  child c = execute(set_args(args),inherit_env()); 
+  child c = execute(set_args(args),inherit_env(),start_in_dir(".")); 
   auto exit_code = wait_for_exit(c);
 
   if (BOOST_PROCESS_EXITSTATUS(exit_code))

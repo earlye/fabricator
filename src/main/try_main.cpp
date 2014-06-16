@@ -97,7 +97,7 @@ void try_main(int argc, char** argv)
       }
 
       // Link
-      build_target(settings,settings.target(),settings.objects(),main_object);
+      build_target(settings,settings.target(),settings.objects(),main_object,settings.type());
 
       // Run unit tests
       boost::filesystem::path src_test("src/test");

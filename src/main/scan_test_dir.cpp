@@ -212,7 +212,7 @@ void scan_test_dir(fab::settings& settings, boost::filesystem::path dir)
       boost::filesystem::path main_object = compile_module(settings,".test_suite.cpp");
       std::copy(settings.objects().begin(),settings.objects().end(),std::inserter(test_objects,test_objects.begin()));
       
-      build_target( settings, ".test_suite.exe", test_objects ,  main_object);
+      build_target( settings, ".test_suite.exe", test_objects ,  main_object, "exe" );
 
       run_tests( boost::filesystem::path("./.test_suite.exe" ));
     }

@@ -38,6 +38,9 @@ namespace fab
     std::string target() const;
     settings& target( std::string const& value );
 
+    std::string type() const;
+    settings& type( std::string const& value );
+
     settings& deserialize( boost::property_tree::ptree const& source );
 
     std::set<std::string> const& cxxflags( ) const;
@@ -66,6 +69,7 @@ namespace fab
     std::set< std::string > lflags_;
     path_type fab_;
     std::string target_;
+    std::string type_;
     std::string objdump_;
     std::string compiler_;
     bool build_all_;

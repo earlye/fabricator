@@ -46,6 +46,18 @@ namespace fab
     return *this; 
   } 
 
+  std::string settings::type() const 
+  { 
+    return type_; 
+  }
+
+  settings& settings::type( std::string const& value ) 
+  { 
+    std::cout << "settings.type = \"" << value << "\"" << std::endl;
+    type_ = value; 
+    return *this; 
+  } 
+
   settings& settings::deserialize(boost::property_tree::ptree const& source)
   {
     std::string new_target = source.get_child("target",boost::property_tree::ptree()).data();
@@ -54,6 +66,10 @@ namespace fab
     std::string new_build_all = source.get_child("build_all",boost::property_tree::ptree()).data();
     if ( new_build_all.length() )
       build_all(boost::lexical_cast<bool>(new_build_all));
+
+    std::string new_type = source.get_child("type",boost::property_tree::ptree()).data();
+    if ( new_type.length())
+      type(new_type);
 
     boost::property_tree::ptree ignore = source.get_child("ignore",boost::property_tree::ptree());
     for( auto i = ignore.begin() ; i != ignore.end() ; ++i )
