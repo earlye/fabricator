@@ -13,7 +13,7 @@ void build_target( fab::settings& settings, boost::filesystem::path target, std:
   using namespace boost::process;
   using namespace boost::process::initializers;
 
-  boost::filesystem::path command = boost::process::search_path(settings.compiler());
+  boost::filesystem::path command = boost::process::search_path(settings.cxx_compiler());
 
   std::vector<std::string> args;
   args.push_back(command.string());

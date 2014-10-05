@@ -29,6 +29,7 @@
 namespace po = boost::program_options;
 namespace fs = boost::filesystem;
 
+
 void display_version(bool value)
 {
   if ( value ) 
@@ -43,6 +44,7 @@ void try_main(int argc, char** argv)
   options.add_options()
     ("help", "produce help message")
     ("dir" , po::value<std::string>(), "build in directory. If not provided, builds in current directory.")
+    ("rebuild" , "rebuild everything" )
     ("version" , po::bool_switch()->notifier(&display_version), "display version" )
     ;
 
@@ -64,6 +66,7 @@ void try_main(int argc, char** argv)
   std::cout << "Entering directory `" << build_dir.string() << "'" << std::endl;
   boost::filesystem::current_path( build_dir );
 
+
   fab::settings settings;
   fs::path fab_json_path("Fab.json");
   if (fs::exists(fab_json_path))
@@ -71,6 +74,9 @@ void try_main(int argc, char** argv)
       settings.deserialize(read_json(fab_json_path));
     }
   settings.fab(argv[0]);
+
+  if (config.count("rebuild"))
+    settings.build_all(true);
 
   // If a Fab file doesn't have a "target" node, the presumption is that this is a directory full of components to build.
   if (settings.target().empty()) 
@@ -84,7 +90,8 @@ void try_main(int argc, char** argv)
       // For now, this means "scan src/main" and "scan library_dirs". "library_dirs" will eventually go away, in favor of being able to specify dependencies, once artifact repos are set up.
       boost::filesystem::path src_main("src/main");
       scan_source_dir(settings,src_main);
-      std::for_each(settings.library_dirs().begin(),settings.library_dirs().end(),boost::bind(scan_source_dir,boost::ref(settings),_1));      
+      std::for_each(settings.library_dirs().begin(),settings.library_dirs().end(),boost::bind(scan_source_dir,boost::ref(settings),_1));
+      std::for_each(settings.library_files().begin(),settings.library_files().end(),boost::bind(&fab::settings::source_modules_insert,boost::ref(settings),_1));
       
       // Compile source modules
       boost::filesystem::path main_object;

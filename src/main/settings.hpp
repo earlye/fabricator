@@ -27,6 +27,10 @@ namespace fab
     settings& library_dirs(std::set< path_type > const&);
     settings& library_dirs_insert( path_type const& path );
 
+    std::set< path_type > const& library_files() const;
+    settings& library_files(std::set< path_type > const&);
+    settings& library_files_insert( path_type const& path );
+
     std::set< path_type > const& objects() const;
     settings& objects(std::set< path_type > const&);
     settings& objects_insert( path_type const& path );
@@ -47,6 +51,10 @@ namespace fab
     settings& cxxflags( std::set<std::string> const& value );
     settings& cxxflags_insert( std::string const& value );
 
+    std::set<std::string> const& cflags( ) const;
+    settings& cflags( std::set<std::string> const& value );
+    settings& cflags_insert( std::string const& value );
+
     std::set<std::string> const& lflags( ) const;
     settings& lflags( std::set<std::string> const& value );
     settings& lflags_insert( std::string const& value );
@@ -54,8 +62,11 @@ namespace fab
     bool build_all() const;
     settings& build_all( bool value );
 
-    std::string compiler() const;
-    settings& compiler(std::string const& value);
+    std::string cxx_compiler() const;
+    settings& cxx_compiler(std::string const& value);
+
+    std::string c_compiler() const;
+    settings& c_compiler(std::string const& value);
 
     std::string objdump() const;
     settings& objdump(std::string const& value);
@@ -64,14 +75,17 @@ namespace fab
     std::set< path_type > ignore_;
     std::set< path_type > source_modules_;
     std::set< path_type > library_dirs_;
+    std::set< path_type > library_files_;
     std::set< path_type > objects_;
     std::set< std::string > cxxflags_;
+    std::set< std::string > cflags_;
     std::set< std::string > lflags_;
     path_type fab_;
     std::string target_;
     std::string type_;
     std::string objdump_;
-    std::string compiler_;
+    std::string cxx_compiler_;
+    std::string c_compiler_;
     bool build_all_;
   };
 }

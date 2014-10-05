@@ -6,7 +6,8 @@
 namespace fab
 {
   settings::settings()
-    : compiler_("g++-4.9")
+    : cxx_compiler_("g++-4.9")
+    , c_compiler_("gcc-4.9")
     , objdump_("gobjdump")
     , build_all_(false)
   { }
@@ -79,6 +80,10 @@ namespace fab
     for( auto i = cxxflags.begin() ; i != cxxflags.end() ; ++i )
       cxxflags_.insert(i->second.data());
 
+    boost::property_tree::ptree cflags = source.get_child("cflags",boost::property_tree::ptree());
+    for( auto i = cflags.begin() ; i != cflags.end() ; ++i )
+      cflags_.insert(i->second.data());
+
     boost::property_tree::ptree lflags = source.get_child("lflags",boost::property_tree::ptree());
     for( auto i = lflags.begin() ; i != lflags.end() ; ++i )
       lflags_.insert(i->second.data());
@@ -86,6 +91,10 @@ namespace fab
     boost::property_tree::ptree library_dirs  = source.get_child("library_dirs",boost::property_tree::ptree());
     for( auto i = library_dirs.begin() ; i != library_dirs.end() ; ++i )
       library_dirs_.insert(i->second.data());
+
+    boost::property_tree::ptree library_files  = source.get_child("library_files",boost::property_tree::ptree());
+    for( auto i = library_files.begin() ; i != library_files.end() ; ++i )
+      library_files_.insert(i->second.data());
   }
 
   std::set< settings::path_type > const& settings::source_modules() const
@@ -119,6 +128,23 @@ namespace fab
   settings& settings::library_dirs_insert( path_type const& path )
   {
     library_dirs_.insert(path);
+    return *this;
+  }
+
+  std::set< settings::path_type > const& settings::library_files() const
+  {
+    return library_files_;
+  }
+
+  settings& settings::library_files(std::set< path_type > const& value)
+  {
+    library_files_ = value;
+    return *this;
+  }
+
+  settings& settings::library_files_insert( path_type const& path )
+  {
+    library_files_.insert(path);
     return *this;
   }
 
@@ -157,6 +183,23 @@ namespace fab
     return *this;
   }
 
+  std::set<std::string> const& settings::cflags() const
+  {
+    return cflags_;
+  }
+
+  settings& settings::cflags(std::set<std::string> const& value)
+  {
+    cflags_ = value;
+    return *this;
+  }
+
+  settings& settings::cflags_insert(std::string const& value)
+  {
+    cflags_.insert(value);
+    return *this;
+  }
+
   std::set<std::string> const& settings::lflags() const
   {
     return lflags_;
@@ -185,14 +228,25 @@ namespace fab
     return *this;
   }
 
-  std::string settings::compiler() const
+  std::string settings::cxx_compiler() const
   {
-    return compiler_;
+    return cxx_compiler_;
   }
 
-  settings& settings::compiler(std::string const& value)
+  settings& settings::cxx_compiler(std::string const& value)
   {
-    compiler_ = value;
+    cxx_compiler_ = value;
+    return *this;
+  }
+
+  std::string settings::c_compiler() const
+  {
+    return c_compiler_;
+  }
+
+  settings& settings::c_compiler(std::string const& value)
+  {
+    c_compiler_ = value;
     return *this;
   }
 
