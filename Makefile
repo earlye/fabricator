@@ -1,7 +1,8 @@
 WORKSPACE=$(shell pwd)/
-BOOST=lib/boost/boost_1_55_0
+BOOST=$(WORKSPACE)lib/boost/boost_1_55_0
 BOOST_PROCESS=lib/boost-process/
 CXX=g++-4.9
+$(info workspace: $(WORKSPACE))
 
 TARGET=$(WORKSPACE)fab
 
@@ -15,13 +16,13 @@ CPPFILES+=$(BOOST_SYSTEM_FILES)
 CPPFILES+=$(BOOST_FILESYSTEM_FILES)
 CPPFILES+=$(BOOST_PROGRAM_OPTIONS_FILES)
 OFILES=$(CPPFILES:.cpp=.o)
+DFILES=$(CPPFILES:.cpp=.d) $(TEST_MODULES:.cpp=.d)
 
 CXXFLAGS+=-std=c++11 
 CXXFLAGS+=-g
 CXXFLAGS+=-MD
-CXXFLAGS+=-I$(BOOST)/include
+CXXFLAGS+=-I$(BOOST)
 CXXFLAGS+=-I$(BOOST_PROCESS)
-
 
 #LFLAGS+=-L$(BOOST)/lib
 #LFLAGS+=-lboost_filesystem-mt
@@ -33,6 +34,7 @@ all : $(TARGET)
 clean :
 	-rm -f $(TARGET)
 	-rm -f $(OFILES)
+	-rm -f $(DFILES)
 
 $(TARGET) : $(OFILES)
 	$(CXX) $(LFLAGS) -o $@ $+
@@ -43,5 +45,4 @@ test : $(TARGET)
 	$(TARGET)
 	ls fab.exe
 
-
--include $(CPPFILES:.cpp=.d) $(TEST_MODULES:.cpp=.d)
+-include $(DFILES) 

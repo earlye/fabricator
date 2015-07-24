@@ -76,7 +76,14 @@ void try_main(int argc, char** argv)
   settings.fab(argv[0]);
 
   if (config.count("rebuild"))
-    settings.build_all(true);
+    {
+      //std::cout << "[rebuild]" << std::endl;
+      settings.build_all(true);
+    }
+  else
+    {
+      //std::cout << "[incremental]" << std::endl;
+    }
 
   // If a Fab file doesn't have a "target" node, the presumption is that this is a directory full of components to build.
   if (settings.target().empty()) 

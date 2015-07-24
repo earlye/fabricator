@@ -2,6 +2,9 @@
 
 #include <boost/lexical_cast.hpp>
 #include <boost/property_tree/ptree.hpp>
+#include <boost/property_tree/json_parser.hpp>
+
+#include <iostream>
 
 namespace fab
 {
@@ -76,6 +79,13 @@ namespace fab
     for( auto i = ignore.begin() ; i != ignore.end() ; ++i )
       ignore_insert(i->second.data());
 
+    boost::property_tree::ptree cxx = source.get_child("c++",boost::property_tree::ptree());
+    // boost::property_tree::write_json(std::cout,cxx);
+    std::string standard = cxx.get_child("standard",boost::property_tree::ptree()).data();
+    // std::cout << "standard:" << standard << std::endl;
+    if (standard=="c++11"||standard=="c++14")
+      cxxflags_.insert("-std=" + standard);
+    
     boost::property_tree::ptree cxxflags = source.get_child("cxxflags",boost::property_tree::ptree());
     for( auto i = cxxflags.begin() ; i != cxxflags.end() ; ++i )
       cxxflags_.insert(i->second.data());

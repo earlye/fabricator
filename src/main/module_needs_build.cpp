@@ -3,6 +3,8 @@
 #include "read_module_dependencies.hpp"
 #include "replace_extension.hpp"
 
+#include <iostream>
+
 bool module_needs_build(fab::settings& settings, boost::filesystem::path const& path )
 {
 
